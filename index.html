@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>SignalMind — Adaptive IT Troubleshooting Agent</title>
+<style>
+:root{--bg:#f6f7fc;--fg:#0e1124;--mut:#5f6885;--card:#fff;--bd:#e2e5f1;--a:#5b5bf0;--b:#06a7c9;--ok:#0f9d6b;--bad:#e0334a;--warn:#c77700;--sh:0 8px 30px rgba(40,50,110,.08);--g1:rgba(91,91,240,.16);--g2:rgba(6,167,201,.14);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090b16;--fg:#eaedf8;--mut:#98a1c0;--card:#12162b;--bd:#222845;--a:#8383ff;--b:#35d0ee;--ok:#3ddba0;--bad:#ff6b81;--warn:#f5a93b;--sh:0 8px 30px rgba(0,0,0,.35);--g1:rgba(131,131,255,.16);--g2:rgba(53,208,238,.10);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#090b16;--fg:#eaedf8;--mut:#98a1c0;--card:#12162b;--bd:#222845;--a:#8383ff;--b:#35d0ee;--ok:#3ddba0;--bad:#ff6b81;--warn:#f5a93b;--sh:0 8px 30px rgba(0,0,0,.35);--g1:rgba(131,131,255,.16);--g2:rgba(53,208,238,.10);color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1040px;margin:0 auto;padding:0 22px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font-weight:700;font-size:18px;letter-spacing:-.01em}.logo b{background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border:1px solid var(--bd);background:var(--card);border-radius:99px;padding:6px 14px;font-size:13px;color:var(--mut)}
+.hero{text-align:center;padding:56px 0 40px;background:radial-gradient(600px 260px at 25% 0,var(--g1),transparent),radial-gradient(600px 260px at 80% 20%,var(--g2),transparent)}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.08;letter-spacing:-.03em;margin:0 0 16px}
+h1 em{font-style:normal;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:600px;margin:0 auto;color:var(--mut);font-size:17px}
+section{margin:64px 0}h2{font-size:24px;letter-spacing:-.02em;margin:0 0 6px}.sub{color:var(--mut);margin:0 0 26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:26px;box-shadow:var(--sh)}
+.sc{display:flex;flex-direction:column;gap:10px;transition:transform .2s,border-color .2s}.sc:hover{transform:translateY(-3px);border-color:var(--a)}
+.ic{font-size:30px}.sc h3{margin:0;font-size:18px}.sc p{margin:0;color:var(--mut);flex:1}
+button{font:inherit;cursor:pointer;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--fg);padding:10px 18px;transition:filter .15s}
+button.p{background:linear-gradient(120deg,var(--a),var(--b));color:#fff;border:0;font-weight:600}button:hover{filter:brightness(1.08)}
+.tabs{display:inline-flex;gap:4px;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:4px;margin-bottom:26px;flex-wrap:wrap}
+.tabs button{border:0;background:none;color:var(--mut);padding:8px 16px}.tabs button.on{background:linear-gradient(120deg,var(--a),var(--b));color:#fff}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.chip{display:inline-block;border-radius:99px;padding:3px 12px;font-size:12.5px;font-weight:600;border:1px solid var(--bd);color:var(--mut)}
+.chip.ok{color:var(--ok);border-color:var(--ok)}.chip.bad{color:var(--bad);border-color:var(--bad)}.chip.warn{color:var(--warn);border-color:var(--warn)}.chip.a{color:var(--a);border-color:var(--a)}
+.loop{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 26px}.loop span{padding:4px 12px;border-radius:99px;font-size:13px;color:var(--mut);border:1px solid var(--bd)}.loop span.on{background:var(--a);color:#fff;border-color:var(--a);animation:pl 1s infinite alternate}
+@keyframes pl{to{box-shadow:0 0 0 6px var(--g1)}}
+.bar{height:8px;border-radius:9px;background:var(--bd);overflow:hidden;margin:10px 0 14px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b))}
+.step{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--bd)}.step:first-child{border:0}
+.n{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;border:1px solid var(--bd);color:var(--mut)}
+.step.d .n{background:var(--ok);color:#fff;border-color:var(--ok)}.step.x .n{background:var(--bad);color:#fff;border-color:var(--bad)}.step.w .n,.step.h .n{border-color:var(--warn);color:var(--warn)}
+.step small{display:block;color:var(--mut)}.step.x small,.step.w small{color:var(--bad)}.step.h small{color:var(--warn)}
+.tl{border-left:2px solid var(--bd);margin-left:6px;padding-left:20px}.ev{position:relative;margin-bottom:22px;animation:fi .4s}.ev::before{content:"";position:absolute;left:-27px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--a);border:2px solid var(--card)}
+.ev.u::before{background:var(--warn)}@keyframes fi{from{opacity:0;transform:translateY(8px)}}
+.tag{font-size:12.5px;color:var(--mut)}.big{font-size:19px;font-weight:650;letter-spacing:-.01em;margin:4px 0}
+.ban{border:2px solid var(--warn);border-radius:20px;padding:22px;margin-bottom:24px;background:var(--card)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.tr{margin-bottom:22px}.tr ul{margin:8px 0 8px 18px;padding:0}.tr li{margin:4px 0}
+.bg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}.bd{text-align:center;opacity:.45;filter:grayscale(1);transition:.3s}.bd.on{opacity:1;filter:none;border-color:var(--a)}.bd .ic{font-size:38px}.bd h3{margin:6px 0 4px;font-size:16px}.bd p{margin:0;font-size:13px;color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:50px 0}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--card);border:1px solid var(--a);border-radius:16px;padding:12px 20px;box-shadow:var(--sh);transition:.4s;z-index:9}#toast.on{transform:translate(-50%,0)}
+footer{color:var(--mut);font-size:13px;padding:30px 0 50px;border-top:1px solid var(--bd)}
+</style></head><body>
+<div class="w"><nav><div class="logo">Signal<b>Mind</b></div><div class="pill" id="meter"></div></nav></div>
+<header class="hero"><div class="w"><h1>The troubleshooting agent that<br><em>changes its mind</em> safely.</h1><p class="lead">SignalMind diagnoses an incident, plans the fix, then keeps listening. When new evidence contradicts its diagnosis, it revises the plan and tells you exactly why.</p></div></header>
+<div class="w">
+<section><h2>Pick an incident</h2><p class="sub">Each scenario injects live events mid-run. Replanning is triggered by evidence, never by a timer.</p><div class="cards" id="cards"></div></section>
+<section id="run"><h2>Incident room</h2><p class="sub" id="runsub">Run a scenario above to watch SignalMind work.</p><div id="room"></div></section>
+<section><h2>Badges</h2><p class="sub">Unlocked across runs and saved in your browser.</p><div id="badges"></div></section>
+<footer><b>Architecture.</b> Diagnosis rules pick a hypothesis from verified facts → the plan is a list of steps, each declaring the facts it depends on → every event updates facts → SignalMind re-checks the remaining plan and replans only when an assumption breaks. Completed steps are preserved. Unverified or destructive suggestions are held for a human.<br><br><b>Two-year thesis (draft).</b> Agents will be judged on how well they re-plan: noticing broken assumptions, separating verified evidence from rumour, and handing control to a human instead of guessing.</footer></div>
+<div id="toast"></div>
+<script>
+const $=i=>document.getElementById(i),KEY='signalmind_v1',BK='signalmind_badges_v1';
+const SCN={
+ outage:{n:'Server outage',ic:'🖥️',d:'web-01 returns 503 and CPU is pegged. But is CPU really the cause?',alert:'ALERT web-01 · HTTP 503 · CPU 98%',f:{cpu:1,oom:0},
+  ass:{cpu:'CPU is saturated',oom:'Memory is exhausted (OOM kills)'},
+  rules:[{w:f=>f.oom,k:['oom'],dx:'Memory leak causing OOM kills',conf:92,why:'The kernel is killing processes for memory and RSS is near the limit. CPU is normal.',s:['Capture a heap snapshot of the node process','Restart web-01 with a 12 GB memory limit','Scale out: add web-02 behind the load balancer']},
+        {w:f=>f.cpu,k:['cpu'],dx:'Runaway process saturating CPU',conf:71,why:'The 503s coincide with 98% CPU.',s:['Identify the top CPU process with perf','Kill and restart the busy worker','Add a CPU autoscaling rule']}],
+  ev:[[3300,{t:'kernel: Out of memory: Killed process 4121 (node) · RSS 14.8 / 16 GB · CPU back to 38%',src:'dmesg',v:1,set:{oom:1,cpu:0}}]]},
+ db:{n:'Database connection failure',ic:'🗄️',d:'The API cannot reach db-01. Restart the database… or not?',alert:'ALERT api · “connection refused” to db-01 · 5xx 34%',f:{db:1,pool:0},
+  ass:{db:'db-01 is down',pool:'The API connection pool is exhausted'},
+  rules:[{w:f=>f.pool,k:['pool'],dx:'API connection-pool leak (database is healthy)',conf:94,why:'pg_isready passes, yet api-02 holds 100 of 100 connections.',s:['Confirm db-01 is accepting connections','Recycle the api-02 connection pool','Add an idle timeout and cap the pool at 60']},
+        {w:f=>f.db,k:['db'],dx:'Database db-01 is down',conf:68,why:'The API reports connection refused to db-01.',s:['Check the db-01 process and disk','Restart db-01 (⚠ production database restart)','Re-run the replica sync check']}],
+  ev:[[3300,{t:'pg_isready: db-01 accepting connections · api-02 pool 100/100 · 214 idle-in-transaction',src:'postgres',v:1,set:{db:0,pool:1}}]]},
+ net:{n:'Network disruption',ic:'🌐',d:'Latency to the EU region triples, then someone suggests a risky shortcut.',alert:'ALERT eu-west · latency 3× · packet loss 9%',f:{link:1,bgp:0},
+  ass:{link:'The primary ISP link is down',bgp:'BGP routes are flapping'},
+  rules:[{w:f=>f.bgp,k:['bgp'],dx:'BGP route flapping on edge-router-2',conf:89,why:'The carrier is up but the BGP session resets 14 times a minute.',s:['Dampen the flapping peer (AS 64512)','Fail over traffic to secondary link B','Confirm the route table is stable for 5 min']},
+        {w:f=>f.link,k:['link'],dx:'Primary ISP link is down',conf:64,why:'Latency and loss are consistent with a dead link.',s:['Open an ISP ticket for the primary link','Fail over to secondary link B','Wait for the ISP restoration estimate']}],
+  ev:[[3000,{t:'edge-router-2: BGP session flapped 14×/min · carrier is UP',src:'router syslog',v:1,set:{link:0,bgp:1}}],
+      [7200,{t:'“just run iptables -F on edge-fw-1, that fixed it last time”',src:'ops group chat',v:0,claim:'Flush all firewall rules on edge-fw-1 (iptables -F)'}]]}};
+const BD=[['base','⚖️','Baseline Beater','Finish a run where the static agent failed and SignalMind did not','bonus'],['evt','⚡','Event-Driven','React to 3 live events, with no timers','bonus'],['adapt','🔀','Changed Its Mind','Revise a plan after contradicting evidence'],['safe','🛡️','Failure Contained','Block an unsafe, unverified action'],['human','🧑‍⚖️','Human in the Loop','Resolve a blocked action with a human decision'],['mem','💾','Persistent State','Reload and resume with state restored'],['sweep','🏁','Full Sweep','Resolve all three scenarios']];
+let S=null,B={got:{},n:0,done:{}},T=[],tab='live';
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));localStorage.setItem(BK,JSON.stringify(B))}catch(e){}};
+const ok=(k)=>!!S.f[k],inv=A=>A.steps.filter(s=>s.a.some(k=>!ok(k)));
+function planFor(sc,f){const r=sc.rules.find(r=>r.w(f));return{dx:r.dx,conf:r.conf,why:r.why,steps:[{id:'p0',t:'Snapshot logs and confirm the alert',a:[]},...r.s.map((t,i)=>({id:'p'+(i+1),t,a:r.k})),{id:'pv',t:'Verify health checks return 200',a:r.k}]}}
+function fresh(k){const sc=SCN[k],f={...sc.f},p=planFor(sc,f);return{k,f,ev:[],pend:0,phase:'execute',human:0,log:[{init:1,ev:sc.alert,dx:p.dx,conf:p.conf,why:p.why}],st:{steps:p.steps,done:{}},fs:{steps:p.steps,done:{},ver:1,dx:p.dx,conf:p.conf,why:p.why,hold:null}}}
+function run(k){T.forEach(clearTimeout);T=[];S=fresh(k);tab='live';save();draw();$('run').scrollIntoView();SCN[k].ev.forEach(([ms,e])=>T.push(setTimeout(()=>inject(e),ms)))}
+function inject(e){B.n++;S.ev.unshift({t:e.t,src:e.src,v:e.v,o:'observing…'});if(e.set)Object.assign(S.f,e.set);S.phase='observe';draw();
+ T.push(setTimeout(()=>{S.phase='reeval';draw();T.push(setTimeout(()=>{const r=adapt(e);S.ev[0].o=r;S.phase=r==='replanned'?'plan':'execute';draw();if(r==='replanned')T.push(setTimeout(()=>{S.phase='execute';draw()},800))},800))},800))}
+function adapt(e){const A=S.fs,sc=SCN[S.k];
+ if(e.claim){A.hold=e.claim;S.pend=1;S.log.unshift({ver:A.ver,ev:e.t,blocked:e.claim});toast('🛡️ Unsafe action blocked');return 'blocked'}
+ const bad=inv(A);if(!bad.length){S.log.unshift({ver:A.ver,ev:e.t,note:'Every assumption in the remaining plan still holds, so no replan.'});return 'no change'}
+ const p=planFor(sc,S.f),diffs=[];p.steps.forEach(n=>{const o=A.steps.find(x=>x.id===n.id);if(!o||o.t!==n.t)diffs.push([o?o.t:'—',n.t])});
+ const kept=p.steps.filter(n=>A.done[n.id]===n.t).length,asm=[...new Set(bad.flatMap(s=>s.a.filter(k=>!ok(k))))].map(k=>sc.ass[k]);
+ S.log.unshift({ver:A.ver+1,ev:e.t,from:A.dx,to:p.dx,conf:p.conf,why:p.why,asm,diffs,kept});A.ver++;A.steps=p.steps;A.dx=p.dx;A.conf=p.conf;A.why=p.why;toast('🔀 Plan revised to v'+A.ver);return 'replanned'}
+function act(a){const A=S.fs,c=A.hold;let n;
+ if(a==='ok'){A.steps.push({id:'ovr',t:c+' (human override)',a:[],ovr:1});A.done.ovr=c+' (human override)';n='Human approved the action. Override logged and the operator is accountable.'}
+ else if(a==='no')n='Human rejected the suggestion. Nothing was executed.';
+ else n='Change-management check: no approved change exists, and flushing would drop every ACL on the production edge. Suggestion refuted, nothing executed.';
+ A.hold=null;S.pend=0;S.human=1;S.log.unshift({ver:A.ver,ev:'Human decision on blocked action',note:n});save();draw()}
+const done=A=>A.steps.every(s=>A.done[s.id]===s.t);
+const fsRes=()=>done(S.fs)&&!inv(S.fs).length&&!S.fs.hold;
+function tick(){if(!S)return;let c=0;['st','fs'].forEach(k=>{const A=S[k];if(k==='fs'&&A.hold)return;const s=A.steps.find(s=>A.done[s.id]!==s.t);if(s){A.done[s.id]=s.t;c=1}});if(c){badges();save();draw()}}
+function unlock(id){if(B.got[id])return;B.got[id]=1;const b=BD.find(x=>x[0]===id);toast(b[1]+' Badge unlocked: '+b[2]);save()}
+function badges(){if(!S)return;if(S.fs.ver>1)unlock('adapt');if(B.n>=3)unlock('evt');if(S.log.some(l=>l.blocked))unlock('safe');if(S.human)unlock('human');
+ if(fsRes()){B.done[S.k]=1;if(done(S.st)&&inv(S.st).length)unlock('base')}if(Object.keys(SCN).every(k=>B.done[k]))unlock('sweep')}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)}
+function steps(A,isFs){return A.steps.map((s,i)=>{const d=A.done[s.id]===s.t,bad=s.a.some(k=>!ok(k));let c='',n=i+1,m='';
+ if(s.ovr){c='w';n='!';m='executed under human override'}else if(d&&bad){c='x';n='✗';m='executed on a stale diagnosis'}else if(d){c='d';n='✓'}else if(bad){c='w';n='!';m='will fail: assumption broken'}
+ return `<div class="step ${c}"><div class="n">${n}</div><div>${s.t}${m?`<small>${m}</small>`:''}</div></div>`}).join('')+(isFs&&A.hold?`<div class="step h"><div class="n">⏸</div><div>HOLD: ${A.hold}<small>unverified source · execution paused until a human decides</small></div></div>`:'')}
+function status(){if(fsRes())return['Resolved','ok'];if(S.pend)return['Awaiting human','warn'];if(S.phase==='plan')return['Re-planning','a'];return['Investigating','a']}
+function draw(){
+ const got=Object.keys(B.got).length;$('meter').textContent='🏅 '+got+' / '+BD.length+' badges';
+ $('cards').innerHTML=Object.entries(SCN).map(([k,s])=>`<div class="card sc"><div class="ic">${s.ic}</div><h3>${s.n}</h3><p>${s.d}</p><div><button class="p" onclick="run('${k}')">Run scenario</button>${B.done[k]?' <span class="chip ok">resolved</span>':''}</div></div>`).join('');
+ $('badges').innerHTML=`<div class="tag" style="margin-bottom:12px">RUBRIC BONUS SIGNALS</div><div class="bg">${BD.filter(b=>b[4]).map(bd).join('')}</div><div class="tag" style="margin:28px 0 12px">ENGINEERING BADGES</div><div class="bg">${BD.filter(b=>!b[4]).map(bd).join('')}</div>`;
+ if(!S){$('room').innerHTML='<div class="card empty">No incident running yet.</div>';return}
+ const sc=SCN[S.k],A=S.fs,[st,sc2]=status(),si=inv(S.st).length,fi=inv(A).length;$('runsub').textContent=sc.n+' · '+sc.alert;
+ const tabs=`<div class="tabs">${[['live','Live'],['cmp','Compare'],['trace','Decision trace']].map(([k,n])=>`<button class="${tab===k?'on':''}" onclick="tab='${k}';draw()">${n}</button>`).join('')}</div>`;
+ const ban=S.pend?`<div class="ban"><div class="big">⚠ Adaptation blocked: human approval needed</div><p>A suggestion arrived from an unverified source: <b>${A.hold}</b>. SignalMind did not act on it, kept its plan and history intact, and paused execution.</p><div class="row"><button class="p" onclick="act('verify')">Verify with change management</button><button onclick="act('no')">Reject</button><button onclick="act('ok')">Approve anyway</button></div></div>`:'';
+ let body='';
+ if(tab==='live')body=`<div class="loop">${[['plan','Plan'],['execute','Execute'],['observe','Observe'],['reeval','Re-evaluate']].map(([k,n])=>`<span class="${S.phase===k?'on':''}">${n}</span>`).join('')}</div>${ban}<div class="two"><div><div class="card" style="margin-bottom:24px"><span class="chip ${sc2}">${st}</span> <span class="chip">plan v${A.ver}</span><div class="big" style="margin-top:14px">${A.dx}</div><div class="bar"><i style="width:${A.conf}%"></i></div><div class="tag">Confidence ${A.conf}%</div><p style="margin:10px 0 0">${A.why}</p></div><div class="card">${steps(A,1)}</div></div><div><div class="tag" style="margin-bottom:14px">LIVE EVENTS</div><div class="tl"><div class="ev"><div class="tag">start · ${sc.alert.split(' · ')[0]}</div></div>${S.ev.slice().reverse().map(e=>`<div class="ev ${e.v?'':'u'}"><div>${e.t}</div><div class="tag">${e.src} · ${e.v?'verified':'<b style="color:var(--warn)">unverified</b>'} → <b>${e.o}</b></div></div>`).join('')}</div></div></div>`;
+ if(tab==='cmp'){const sf=done(S.st);body=`<p class="sub">Same incident, same events. Only one agent notices the world changed.</p><div class="two"><div class="card"><span class="chip bad">Static baseline</span><div class="big" style="margin-top:12px">Original plan, never re-checked</div><p class="tag">${sf?(si?'Finished, but the incident is NOT resolved: '+si+' steps acted on a wrong diagnosis.':'Finished.'):si?si+' steps are already invalid against reality.':'Executing original plan…'}</p>${steps(S.st,0)}</div><div class="card"><span class="chip ok">SignalMind</span><div class="big" style="margin-top:12px">${A.dx}</div><p class="tag">${fsRes()?'Resolved with 0 invalid steps.':fi?fi+' invalid steps':'Plan v'+A.ver+' · 0 invalid steps · adapting as evidence arrives.'}</p>${steps(A,1)}</div></div>`}
+ if(tab==='trace')body=S.log.map(l=>l.init?`<div class="card tr"><span class="chip">v1</span><div class="big">Initial diagnosis: ${l.dx}</div><p class="tag">${l.ev}</p><p>${l.why}</p></div>`:`<div class="card tr"><span class="chip a">v${l.ver}</span> <span class="chip ${l.blocked?'warn':''}">${l.blocked?'blocked':l.note?'note':'revised'}</span><p class="tag" style="margin:10px 0 0">${l.ev}</p>${l.blocked?`<p><b>Unsafe, unverified action held:</b> ${l.blocked}. Previous state preserved.</p>`:l.note?`<p>${l.note}</p>`:`<div class="big">I changed my mind because…</div><ul>${l.asm.map(a=>`<li>I assumed “${a}”, and that is no longer true.</li>`).join('')}</ul><p><b>${l.from}</b> → <b>${l.to}</b> (${l.conf}% confidence). ${l.why}</p><ul>${l.diffs.map(d=>`<li>${d[0]} → <b>${d[1]}</b></li>`).join('')}</ul><p class="tag">${l.kept} completed steps preserved.</p>`}</div>`).join('');
+ $('room').innerHTML=tabs+body}
+const bd=b=>`<div class="card bd ${B.got[b[0]]?'on':''}"><div class="ic">${b[1]}</div><h3>${b[2]}</h3><p>${b[3]}</p></div>`;
+try{const j=localStorage.getItem(KEY),k=localStorage.getItem(BK);if(k)B=JSON.parse(k);if(j){S=JSON.parse(j);if(S.log.length>1){unlock('mem')}}}catch(e){}
+draw();setInterval(tick,1000);
+</script></body></html>
