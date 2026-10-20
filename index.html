@@ -41,15 +41,16 @@ button.p{background:linear-gradient(120deg,var(--a),var(--b));color:#fff;border:
 .empty{text-align:center;color:var(--mut);padding:50px 0}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,120px);background:var(--card);border:1px solid var(--a);border-radius:16px;padding:12px 20px;box-shadow:var(--sh);transition:.4s;z-index:9}#toast.on{transform:translate(-50%,0)}
 footer{color:var(--mut);font-size:13px;padding:30px 0 50px;border-top:1px solid var(--bd)}
+#cap{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translate(-50%,-160px);max-width:min(720px,92vw);background:var(--card);border:1px solid var(--a);border-radius:16px;padding:14px 22px;box-shadow:var(--sh);transition:.4s;z-index:9;text-align:center;font-weight:500}#cap.on{transform:translate(-50%,0)}
 </style></head><body>
 <div class="w"><nav><div class="logo">Signal<b>Mind</b></div><div class="pill" id="meter"></div></nav></div>
-<header class="hero"><div class="w"><h1>The troubleshooting agent that<br><em>changes its mind</em> safely.</h1><p class="lead">SignalMind diagnoses an incident, plans the fix, then keeps listening. When new evidence contradicts its diagnosis, it revises the plan and tells you exactly why.</p></div></header>
+<header class="hero"><div class="w"><h1>The troubleshooting agent that<br><em>changes its mind</em> safely.</h1><p class="lead">SignalMind diagnoses an incident, plans the fix, then keeps listening. When new evidence contradicts its diagnosis, it revises the plan and tells you exactly why.</p><p style="margin-top:26px"><button class="p" onclick="demo()">▶ Play the 90-second demo</button> <button onclick="stopDemo()">Stop</button></p></div></header>
 <div class="w">
 <section><h2>Pick an incident</h2><p class="sub">Each scenario injects live events mid-run. Replanning is triggered by evidence, never by a timer.</p><div class="cards" id="cards"></div></section>
 <section id="run"><h2>Incident room</h2><p class="sub" id="runsub">Run a scenario above to watch SignalMind work.</p><div id="room"></div></section>
 <section><h2>Badges</h2><p class="sub">Unlocked across runs and saved in your browser.</p><div id="badges"></div></section>
 <footer><b>Architecture.</b> Diagnosis rules pick a hypothesis from verified facts → the plan is a list of steps, each declaring the facts it depends on → every event updates facts → SignalMind re-checks the remaining plan and replans only when an assumption breaks. Completed steps are preserved. Unverified or destructive suggestions are held for a human.<br><br><b>Two-year thesis (draft).</b> Agents will be judged on how well they re-plan: noticing broken assumptions, separating verified evidence from rumour, and handing control to a human instead of guessing.</footer></div>
-<div id="toast"></div>
+<div id="toast"></div><div id="cap"></div>
 <script>
 const $=i=>document.getElementById(i),KEY='signalmind_v1',BK='signalmind_badges_v1';
 const SCN={
@@ -115,5 +116,21 @@ function draw(){
  $('room').innerHTML=tabs+body}
 const bd=b=>`<div class="card bd ${B.got[b[0]]?'on':''}"><div class="ic">${b[1]}</div><h3>${b[2]}</h3><p>${b[3]}</p></div>`;
 try{const j=localStorage.getItem(KEY),k=localStorage.getItem(BK);if(k)B=JSON.parse(k);if(j){S=JSON.parse(j);if(S.log.length>1){unlock('mem')}}}catch(e){}
+let DT=[];
+function cap(m){const c=$('cap');c.textContent=m;c.classList.toggle('on',!!m)}
+function stopDemo(){DT.forEach(clearTimeout);DT=[];cap('')}
+function demo(){stopDemo();T.forEach(clearTimeout);window.scrollTo(0,0);
+ const P=[[0,()=>cap('Most agents commit to a plan and run it blindly. SignalMind notices when reality changes and safely changes its mind.')],
+ [7,()=>{run('db');cap('Incident: the API cannot reach the database. First diagnosis: db-01 is down, and the plan restarts a production database.')}],
+ [15,()=>cap('A new signal arrives: the database is healthy, the connection pool is full. Observe, re-evaluate, replan.')],
+ [24,()=>{tab='trace';draw();cap('“I changed my mind because…” Every revision names the broken assumption and keeps completed steps.')}],
+ [34,()=>{tab='cmp';draw();cap('Same events, static baseline: it restarts a healthy production database and the incident is not resolved. SignalMind resolves it.')}],
+ [47,()=>{run('net');cap('Failure test: a network incident. The diagnosis flips to BGP route flapping.')}],
+ [56,()=>cap('Someone suggests flushing the production firewall. Unverified and destructive, so SignalMind blocks it and pauses.')],
+ [66,()=>{if(S&&S.pend)act('verify');cap('Verified against change management: refuted. Nothing executed, and state was preserved.')}],
+ [75,()=>{tab='trace';draw();cap('Every decision is traceable, including the human one.')}],
+ [82,()=>{$('badges').scrollIntoView({behavior:'smooth'});cap('Event-driven, baseline comparison, persisted state, human in the loop: an agent you can deploy, not just demo.')}],
+ [91,()=>cap('')]];
+ P.forEach(([s,f])=>DT.push(setTimeout(f,s*1000)))}
 draw();setInterval(tick,1000);
 </script></body></html>
